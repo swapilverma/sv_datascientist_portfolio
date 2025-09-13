@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swapil Verma - Data Scientist Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #22d3ee;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent: #f43f5e;
+            --success: #10b981;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, #1a1f3a 100%);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.1;
+            background-image: 
+                radial-gradient(circle at 20% 50%, var(--primary) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, var(--secondary) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, var(--accent) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(-20px, -20px) rotate(1deg); }
+            66% { transform: translate(20px, -10px) rotate(-1deg); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 0.5rem 2rem;
+            background: rgba(15, 23, 42, 0.95);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.5)); }
+            to { filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.8)); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text) 0%, var(--primary) 50%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .hero-description {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-outline {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* About Section */
+        .about {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-showmore {
+            font-size: 2rem;
+            text-align: center;
+            position: relative;
+            margin-top: 2rem;
+        }
+        .section-showmore:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 1.5px 4.0px rgba(99, 102, 241, 0.4);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+        .p-lighter {
+            font-weight: lighter;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 2fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .skill-card {
+            background: rgba(30, 41, 59, 0.5);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
+        }
+
+        .skill-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Projects Section */
+        .projects {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .filter-tag {
+            padding: 0.5rem 1rem;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-muted);
+        }
+
+        .filter-tag:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .filter-tag.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            transition: all 0.3s ease;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project-card.hidden {
+            opacity: 0;
+            transform: translateY(20px);
+            display: none;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+            border-color: var(--primary);
+        }
+
+        .project-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image::before {
+            content: '📊';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            opacity: 0.3;
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .project-description {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-tag {
+            padding: 0.25rem 0.75rem;
+            background: rgba(99, 102, 241, 0.2);
+            border-radius: 15px;
+            font-size: 0.875rem;
+            color: var(--primary);
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .project-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-link:hover {
+            color: var(--secondary);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 5rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo">Data Scientist</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Hi — I’m Swapil</h1>
+            <p class="subtitle">Data Scientist & AI Engineer</p>
+            <p class="hero-description">
+                Transforming complex data into actionable insights. Specialized in <b>Artificial Intelligence, machine learning, 
+                deep learning, and statistical analysis</b>. Blending technology, statistics and product sense. 
+                I build models, dashboards and end-to-end ML systems that people actually use.
+            </p>
+            <div class="cta-buttons">
+                <a href="#projects" class="btn btn-primary">
+                    <span>View Projects</span>
+                    <span>→</span>
+                </a>
+                <a href="#contact" class="btn btn-outline">
+                    <span>Get In Touch</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <h2 class="section-title">Core Competencies</h2>
+        <div class="skills-grid">
+            <div class="skill-card">
+                <div class="skill-icon" >🌐</div>
+                <h3>Generative AI & LLMs</h3>
+                <p class="p-lighter">OpenAI, Hugging Face, LangChain, Llama, Groq </p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">🤖</div>
+                <h3>Deep Learning Architectures</h3>
+                <p class="p-lighter">LSTM, GRU, Transformers, PyTorch, TensorFlow, Keras</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">🧠</div>
+                <h3>Machine Learning & Statistics</h3>
+                <p class="p-lighter">Hypothesis Testing, Statsmodels, Regression, Scikit-learn, Scipy</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">📊</div>
+                <h3>Visualization</h3>
+                <p class="p-lighter">Power BI, Tableau, Streamlit, Plotly Dash, Matplotlib, Seaborn</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon">📈</div>
+                <h3>Data Analysis</h3>
+                <p class="p-lighter">SQL, SAS, Excel, Pandas, Numpy </p>
+            </div>
+           <div class="skill-card">
+                <div class="skill-icon">⚙️</div>
+                <h3>MLOps & Deployment</h3>
+                <p class="p-lighter">Docker, FastAPI, MLflow, GitHub Actions, AWS/GCP</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="projects">
+        <h2 class="section-title">Featured Projects</h2>
+        
+        <div class="filter-container">
+            <div class="filter-tag active" data-filter="all">All Projects</div>
+            <div class="filter-tag" data-filter="ml">Machine Learning</div>
+            <div class="filter-tag" data-filter="nlp">NLP</div>
+            <div class="filter-tag" data-filter="cv">Computer Vision</div>
+            <div class="filter-tag" data-filter="analytics">Analytics</div>
+            <div class="filter-tag" data-filter="deep-learning">Deep Learning</div>
+        </div>
+
+        <div class="projects-grid">
+            <div class="project-card" data-tags="ml,analytics">
+                <div class="project-image"></div>
+                <div class="project-content">
+                    <h3 class="project-title">Customer Churn Prediction</h3>
+                    <p class="project-description">
+                        Built an ML model to predict customer churn with 94% accuracy using ensemble methods.
+                        Implemented feature engineering and handled imbalanced datasets.
+                    </p>
+                    <div class="project-tags">
+                        <span class="project-tag">Machine Learning</span>
+                        <span class="project-tag">Analytics</span>
+                        <span class="project-tag">Python</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link">🔗 GitHub</a>
+                        <a href="#" class="project-link">📝 Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" data-tags="nlp,deep-learning">
+                <div class="project-image"></div>
+                <div class="project-content">
+                    <h3 class="project-title">Sentiment Analysis System</h3>
+                    <p class="project-description">
+                        Developed a real-time sentiment analysis system using BERT transformers for social media monitoring.
+                        Achieved 92% accuracy on multi-class classification.
+                    </p>
+                    <div class="project-tags">
+                        <span class="project-tag">NLP</span>
+                        <span class="project-tag">Deep Learning</span>
+                        <span class="project-tag">BERT</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link">🔗 GitHub</a>
+                        <a href="#" class="project-link">📝 Paper</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" data-tags="cv,deep-learning">
+                <div class="project-image"></div>
+                <div class="project-content">
+                    <h3 class="project-title">Object Detection Pipeline</h3>
+                    <p class="project-description">
+                        Created an end-to-end object detection pipeline using YOLOv5 for real-time video analysis.
+                        Optimized for edge deployment with 30+ FPS performance.
+                    </p>
+                    <div class="project-tags">
+                        <span class="project-tag">Computer Vision</span>
+                        <span class="project-tag">Deep Learning</span>
+                        <span class="project-tag">YOLO</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link">🔗 GitHub</a>
+                        <a href="#" class="project-link">🎥 Video</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" data-tags="analytics,ml">
+                <div class="project-image"></div>
+                <div class="project-content">
+                    <h3 class="project-title">Sales Forecasting Model</h3>
+                    <p class="project-description">
+                        Developed time series forecasting models using ARIMA and Prophet to predict sales trends.
+                        Reduced inventory costs by 23% through accurate demand forecasting.
+                    </p>
+                    <div class="project-tags">
+                        <span class="project-tag">Analytics</span>
+                        <span class="project-tag">Time Series</span>
+                        <span class="project-tag">Forecasting</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link">🔗 GitHub</a>
+                        <a href="#" class="project-link">📊 Dashboard</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" data-tags="ml,analytics">
+                <div class="project-image"></div>
+                <div class="project-content">
+                    <h3 class="project-title">Fraud Detection System</h3>
+                    <p class="project-description">
+                        Built a real-time fraud detection system using anomaly detection algorithms.
+                        Processed millions of transactions daily with 99.8% precision.
+                    </p>
+                    <div class="project-tags">
+                        <span class="project-tag">Machine Learning</span>
+                        <span class="project-tag">Anomaly Detection</span>
+                        <span class="project-tag">Real-time</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link">🔗 GitHub</a>
+                        <a href="#" class="project-link">📄 Case Study</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" data-tags="nlp,ml">
+                <div class="project-image"></div>
+                <div class="project-content">
+                    <h3 class="project-title">Document Classification</h3>
+                    <p class="project-description">
+                        Automated document classification system using NLP techniques and transformers.
+                        Reduced manual processing time by 80% with 96% accuracy.
+                    </p>
+                    <div class="project-tags">
+                        <span class="project-tag">NLP</span>
+                        <span class="project-tag">Classification</span>
+                        <span class="project-tag">Automation</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link">🔗 GitHub</a>
+                        <a href="#" class="project-link">🚀 API</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cta-buttons" style="margin-top: 20px;">
+            
+            <a href="project.html" class="btn btn-outline ">
+            <span>Show More</span>
+        </a>
+
+        </div>
+        
+    </section>
+
+    <section id="contact" class="contact">
+        <h2 class="section-title">Get In Touch</h2>
+        <p class="hero-description">
+            I'm always interested in discussing new opportunities, collaborations, 
+            or just having a chat about data science and machine learning.
+        </p>
+        <div class="contact-info">
+            <a href="mailto:swapilverma23@gmail.com" class="contact-item">
+                <span>📧</span>
+                <span>Gmail</span>
+            </a>
+            <a href="https://linkedin.com/in/swapil-verma" class="contact-item">
+                <span>💼</span>
+                <span>LinkedIn</span>
+            </a>
+            <a href="https://github.com/swapilverma" class="contact-item">
+                <span>🐙</span>
+                <span>GitHub</span>
+            </a>
+            <a href="tel:+918847219649" class="contact-item">
+                <span>📞</span>
+                <span>Mobile</span>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Swapil Verma. Built with passion for data science.</p>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Project filtering functionality
+        const filterTags = document.querySelectorAll('.filter-tag');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        filterTags.forEach(tag => {
+            tag.addEventListener('click', function() {
+                // Remove active class from all tags
+                filterTags.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tag
+                this.classList.add('active');
+
+                const filter = this.getAttribute('data-filter');
+
+                projectCards.forEach(card => {
+                    if (filter === 'all') {
+                        card.classList.remove('hidden');
+                        setTimeout(() => {
+                            card.style.display = 'block';
+                        }, 10);
+                    } else {
+                        const cardTags = card.getAttribute('data-tags').split(',');
+                        if (cardTags.includes(filter)) {
+                            card.classList.remove('hidden');
+                            setTimeout(() => {
+                                card.style.display = 'block';
+                            }, 10);
+                        } else {
+                            card.classList.add('hidden');
+                            setTimeout(() => {
+                                card.style.display = 'none';
+                            }, 300);
+                        }
+                    }
+                });
+            });
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'all 0.6s ease-out';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
